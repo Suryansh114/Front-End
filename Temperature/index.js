@@ -1,4 +1,4 @@
-// SELECT ELEMENTS
+// Select Elements
 const iconElement = document.querySelector(".weather-icon");
 const tempElement = document.querySelector(".temperature-value p");
 const descElement = document.querySelector(".temperature-description p");
@@ -7,7 +7,7 @@ const notificationElement = document.querySelector(".notification");
 const loadingElement = document.getElementById("loading");
 const cityInput = document.getElementById("city-input");
 
-// WEATHER DATA OBJECT
+// Weather Data Objects
 const weather = {
     temperature: { unit: "celsius" }
 };
@@ -21,30 +21,30 @@ if ("geolocation" in navigator) {
     showNotification("Browser doesn't support Geolocation");
 }
 
-// SET USER POSITION
+// User Location
 function setPosition(position) {
     const { latitude, longitude } = position.coords;
     getWeatherByCoords(latitude, longitude);
 }
 
-// SHOW ERROR
+// Error in case of location not identified
 function showError(error) {
     showNotification(error.message);
 }
 
-// DISPLAY NOTIFICATION
+// Display
 function showNotification(message) {
     notificationElement.style.display = "block";
     notificationElement.innerHTML = `<p>${message}</p>`;
 }
 
-// FETCH WEATHER BY COORDINATES
+// Fetching weather form coordinates
 async function getWeatherByCoords(lat, lon) {
     const api = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
     await fetchWeather(api);
 }
 
-// FETCH WEATHER BY CITY NAME
+// Fetching weather by city name from the API copied
 async function getWeatherByCity() {
     const city = cityInput.value.trim();
     if (!city) return;
@@ -53,7 +53,6 @@ async function getWeatherByCity() {
     await fetchWeather(api);
 }
 
-// FETCH & PROCESS WEATHER DATA
 async function fetchWeather(api) {
     loadingElement.style.display = "block";
     notificationElement.style.display = "none";
@@ -82,7 +81,7 @@ async function fetchWeather(api) {
     }
 }
 
-// DISPLAY TO UI
+// Display data
 function displayWeather() {
     iconElement.innerHTML = `<img src="icons/${weather.iconId || "unknown"}.png" />`;
     tempElement.innerHTML = `${weather.temperature.value}°<span>${weather.temperature.unit === "celsius" ? "C" : "F"}</span>`;
@@ -90,12 +89,12 @@ function displayWeather() {
     locationElement.innerHTML = `${weather.city}, ${weather.country}`;
 }
 
-// CONVERT TO FAHRENHEIT
+// Conversion to farenheit
 function celsiusToFahrenheit(temp) {
-    return (temp * 9) / 5 + 32;
+    return (temp * 9/5)  + 32;
 }
 
-// TOGGLE °C/°F ON CLICK
+// Converting C/F on click
 tempElement.addEventListener("click", () => {
     if (weather.temperature.value === undefined) return;
 
@@ -108,7 +107,7 @@ tempElement.addEventListener("click", () => {
         weather.temperature.unit = "celsius";
     }
 });
-// Allow Enter key to trigger city search
+// Enter key to search for city temp
 cityInput.addEventListener("keyup", (event) => {
     if (event.key === "Enter") {
         getWeatherByCity();
